@@ -40,7 +40,7 @@
 "!="                              {return *yytext;}
 [#][a-z<>.h$]+                    {return HEAD;}
 [/]{2}.*                          {return CMT;}
-[ \t\n]                           {}
+[ ;\t\n]                          {}
 "end"                             {return END;}
 "define"                          {return DEF;}
 "return"                          {return RET;}
