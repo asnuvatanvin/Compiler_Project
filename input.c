@@ -3,7 +3,7 @@
 #include<string.h>
 //This is a mini compiler
 
-define function1(int a,float b,string c):
+int function1(int a,float b,string c):
     int a=20,b=50
     pfs("Value_of_a:")
     pfi(a)
@@ -26,7 +26,8 @@ define function1(int a,float b,string c):
     abs(k)
     return a
 
-define function2(int val,float fval):
+
+float function2(int val,float fval):
     float m = 60.0, n = 2.35
     pfs("Value_of_m:")
     pff(m)
@@ -50,7 +51,8 @@ define function2(int val,float fval):
     pow(m,n)
     return m
 
-define function3():
+
+void function3():
     string str="CSE"
     pfs("Value_of_str:")
     pfsn(str)
@@ -67,6 +69,7 @@ define function3():
     cpy(st,str)
     pfsn(st)
     return st
+
 
 define main():
     int a=10,b=20
