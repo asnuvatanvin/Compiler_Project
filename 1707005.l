@@ -40,10 +40,11 @@
 "!="                              {return *yytext;}
 [#][a-z<>.h$]+                    {return HEAD;}
 [/]{2}.*                          {return CMT;}
-[ ;\t\n]                          {}
+[ ;\t\n]                           {}
 "end"                             {return END;}
 "define"                          {return DEF;}
 "return"                          {return RET;}
+"void"                            {return VOID;}
 "floor"                           {return FLOOR;}
 "ceil"                            {return CEIL;}
 "abs"                             {return ABS;}
