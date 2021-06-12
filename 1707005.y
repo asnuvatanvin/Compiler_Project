@@ -2,22 +2,22 @@
 	#include<stdio.h>
 	#include<math.h>
 	#include<string.h>
-    #include<limits.h>
-    #include<float.h>
+        #include<limits.h>
+        #include<float.h>
 	void yyerror(const char *);
 	extern int yylex();
-    extern int yyparse();
-    extern FILE *yyin;
+        extern int yyparse();
+        extern FILE *yyin;
 	extern FILE *yyout;
 
-    typedef struct {
-        char name[100];
-        char vas[100];
-        int val;
-        float vall;
+        typedef struct {
+            char name[100];
+            char vas[100];
+            int val;
+            float vall;
 
-    }store ;
-    store symbol_table[200];
+        }store ;
+        store symbol_table[200];
 
 	int count,sw,dv,iff;
 	store find_value(char **sym);
