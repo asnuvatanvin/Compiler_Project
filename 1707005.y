@@ -10,14 +10,14 @@
         extern FILE *yyin;
 	extern FILE *yyout;
 
-        typedef struct {
-            char name[100];
-            char vas[100];
-            int val;
-            float vall;
+    typedef struct {
+        char name[100];
+        char vas[100];
+        int val;
+        float vall;
 
-        }store ;
-        store symbol_table[200];
+    }store ;
+    store symbol_table[200];
 
 	int count,sw,dv,iff;
 	store find_value(char **sym);
@@ -35,9 +35,9 @@
 }
 
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID DEF
 %type<variable>statement function function_call declaration_for_function params factor return while block condition expr assignments assignment if_else elseif else switch_ case cases df display var declaration type comment header for
-%token IF ELIF ELSE FOR DW SW CA WHILE COL INC DEC MIN MAX GCD PFI PRIME DF POW PFF SINE COS TAN LN CMT HEAD DEF ABS FLOOR CEIL RET END PFS PFSN LEN CMP CAT CPY
+%token IF ELIF ELSE FOR DW SW CA WHILE COL INC DEC MIN MAX GCD PFI PRIME DF POW PFF SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET END PFS PFSN LEN CMP CAT CPY
 %left '+' '-'
 %left '*' '/'
 %left INC DEC
@@ -76,7 +76,7 @@ header:
     ;
 
 function:
-    DEF ID '(' params ')' COL {
+    type ID '(' params ')' COL{
                     if($2.str[0]=='m' && $2.str[1]=='a' && $2.str[2]=='i' &&$2.str[3]=='n')
                     {
                         printf("Main function starts here.\n");
@@ -95,7 +95,7 @@ params:
 
 declaration_for_function:
     type ID
-    |/*No Parameters*/{printf("function has no paramters\n");}
+    |/*No Parameters*/{;}
     ;
 
 function_call:
@@ -128,6 +128,8 @@ type:
     INTT
     |FL
     |STT
+    |DEF
+    |VOID
     ;
 assignments:
     assignments ',' assignment
