@@ -3,11 +3,11 @@
 	#include<math.h>
 	#include<string.h>
         #include<limits.h>
-        #include<float.h>
+    	#include<float.h>
 	void yyerror(const char *);
 	extern int yylex();
-        extern int yyparse();
-        extern FILE *yyin;
+    	extern int yyparse();
+    	extern FILE *yyin;
 	extern FILE *yyout;
 
     typedef struct {
@@ -35,9 +35,9 @@
 }
 
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT VOID DEF
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID
 %type<variable>statement function function_call declaration_for_function params factor return while block condition expr assignments assignment if_else elseif else switch_ case cases df display var declaration type comment header for
-%token IF ELIF ELSE FOR DW SW CA WHILE COL INC DEC MIN MAX GCD PFI PRIME DF POW PFF SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET END PFS PFSN LEN CMP CAT CPY
+%token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD PFI PRIME DF POW PFF SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET PFS PFSN LEN CMP CAT CPY
 %left '+' '-'
 %left '*' '/'
 %left INC DEC
@@ -128,7 +128,6 @@ type:
     INTT
     |FL
     |STT
-    |DEF
     |VOID
     ;
 assignments:
@@ -297,14 +296,16 @@ while:
     ;
 condition:
     factor{$$.ival=$1.ival;$$.fval=$1.fval;}
-    |expr '>' factor{if($1.ival==INT_MIN){$$.ival = $1.fval > $3.fval;}else{$$.ival = $1.fval > $3.fval;}}
-    |expr '<' factor{if($1.ival==INT_MIN){$$.ival = $1.fval > $3.fval;}else{$$.ival = $1.fval > $3.fval;}}
-    |expr '==' factor{if($1.ival==INT_MIN){$$.ival = $1.fval > $3.fval;}else{$$.ival = $1.fval > $3.fval;}}
-    |expr '!=' factor{if($1.ival==INT_MIN){$$.ival = $1.fval > $3.fval;}else{$$.ival = $1.fval > $3.fval;}}
+    |expr '>' factor{if($1.ival==INT_MIN){$$.ival = $1.fval > $3.fval;}else{$$.ival = $1.ival > $3.ival;}}
+    |expr '<' factor{if($1.ival==INT_MIN){$$.ival = $1.fval < $3.fval;}else{$$.ival = $1.ival < $3.ival;}}
+    |expr '==' factor{if($1.ival==INT_MIN){$$.ival = $1.fval == $3.fval;}else{$$.ival = $1.ival == $3.ival;}}
+    |expr '!=' factor{if($1.ival==INT_MIN){$$.ival = $1.fval != $3.fval;}else{$$.ival = $1.ival != $3.ival;}}
+    |expr ">=" factor{if($1.ival==INT_MIN){$$.ival = $1.fval >= $3.fval;}else{$$.ival = $1.ival >= $3.ival;}}
+    |expr "<=" factor{if($1.ival==INT_MIN){$$.ival = $1.fval <= $3.fval;}else{$$.ival = $1.ival <= $3.ival;}}
     ;
 expr:
     factor{$$.ival=$1.ival;$$.fval=$1.fval;if($1.st!=NULL){strcpy($$.st,$1.st);}}
-    |LEN '(' expr ')'{int a=strlen($3.st);printf("Lenght of string: %d\n",a);}
+    |LEN '(' expr ')'{int a=strlen($3.st);printf("Lenght of string: %d\n",a);$$.ival=a;}
     |CMP '(' expr ',' expr ')'{store n = find_value(&$3.str),m=find_value(&$5.str);int a = strcmp(n.vas,m.vas); 
                             a=0?printf("Strings match.\n"):printf("Strings do not match\n");}
     |CAT '(' expr ',' expr ')'{int i = add_value(&$3.str),j = add_value(&$5.str);strcat(symbol_table[i].vas,symbol_table[j].vas);}
@@ -399,7 +400,7 @@ expr:
     |expr '+' factor{if($1.fval!=FLT_MIN){$$.fval=$1.fval+$3.fval;}else{$$.ival=$1.ival+$3.ival;}}
     |expr '-' factor{if($1.fval!=FLT_MIN){$$.fval=$1.fval-$3.fval;}else{$$.ival=$1.ival-$3.ival;}}
     |expr '*' factor{if($1.fval!=FLT_MIN){$$.fval=$1.fval*$3.fval;}else{$$.ival=$1.ival*$3.ival;}}
-    |expr '/' factor{if($1.fval!=FLT_MIN){$$.fval=$1.fval/$3.fval;}else{$$.ival=$1.ival/$3.ival;}}
+    |expr '/' factor{if($1.fval!=FLT_MIN){if($3.fval!=0.0){$$.fval=$1.fval/$3.fval;}}else{if($3.ival!=0){$$.ival=$1.ival/$3.ival;}}}
     |expr '%' factor{$$.ival = $1.ival % $3.ival;}
     |expr INC {$$.ival = $1.ival + 1; int i = add_value(&$1.str);symbol_table[i].val++;}
     |expr DEC {$$.ival = $1.ival - 1; int i = add_value(&$1.str);symbol_table[i].val--;}
