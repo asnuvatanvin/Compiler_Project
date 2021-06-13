@@ -36,13 +36,13 @@
 "--"                              {return DEC;}
 ">"                               {return *yytext;}
 "<"                               {return *yytext;}
+">="                              {return *yytext;}
+"<="                              {return *yytext;}
 "=="                              {return *yytext;}
 "!="                              {return *yytext;}
-[#][a-z<>.h$]+                    {return HEAD;}
+[#][a-z<>.h]+                     {return HEAD;}
 [/]{2}.*                          {return CMT;}
 [ ;\t\n]                           {}
-"end"                             {return END;}
-"define"                          {return DEF;}
 "return"                          {return RET;}
 "void"                            {return VOID;}
 "floor"                           {return FLOOR;}
@@ -73,7 +73,6 @@
 "else"                            {return ELSE;}
 "for"                             {return FOR;}
 "while"                           {return WHILE;}
-"dowhile"                         {return DW;}
 "switch"                          {return SW;}
 "case"                            {return CA;}
 "default"                         {return DF;}
