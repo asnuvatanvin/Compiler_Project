@@ -71,7 +71,7 @@ void function3():
     return st
 
 
-define main():
+void main():
     int a=10,b=20
     int c
     c=a+b
@@ -117,7 +117,7 @@ define main():
     pfsn("Below_is_an_if_elseif_else_statement")
     if(b==20){
         float h=3.0
-        if(h>4.0){
+        if(h>=4.0){
             h=h*4.0
             pff(h)
         }
