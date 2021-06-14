@@ -46,43 +46,47 @@
      ID = 262,
      STRING = 263,
      STT = 264,
-     IF = 265,
-     ELIF = 266,
-     ELSE = 267,
-     FOR = 268,
-     DW = 269,
-     SW = 270,
-     CA = 271,
-     WHILE = 272,
-     COL = 273,
-     INC = 274,
-     DEC = 275,
-     MIN = 276,
-     MAX = 277,
-     GCD = 278,
-     PFI = 279,
-     PRIME = 280,
-     DF = 281,
-     POW = 282,
-     PFF = 283,
-     SINE = 284,
-     COS = 285,
-     TAN = 286,
-     LN = 287,
-     CMT = 288,
-     HEAD = 289,
-     DEF = 290,
-     ABS = 291,
-     FLOOR = 292,
-     CEIL = 293,
-     RET = 294,
-     END = 295,
-     PFS = 296,
-     PFSN = 297,
-     LEN = 298,
-     CMP = 299,
-     CAT = 300,
-     CPY = 301
+     VOID = 265,
+     AN = 266,
+     IF = 267,
+     ELIF = 268,
+     ELSE = 269,
+     FOR = 270,
+     SW = 271,
+     CA = 272,
+     WHILE = 273,
+     COL = 274,
+     INC = 275,
+     DEC = 276,
+     MIN = 277,
+     MAX = 278,
+     GCD = 279,
+     PFI = 280,
+     DO = 281,
+     PRIME = 282,
+     DF = 283,
+     POW = 284,
+     PFF = 285,
+     PFA = 286,
+     SINE = 287,
+     COS = 288,
+     TAN = 289,
+     LN = 290,
+     CMT = 291,
+     HEAD = 292,
+     ABS = 293,
+     FLOOR = 294,
+     CEIL = 295,
+     RET = 296,
+     PFS = 297,
+     PFSN = 298,
+     LEN = 299,
+     CMP = 300,
+     CAT = 301,
+     CPY = 302,
+     END = 303,
+     INPI = 304,
+     INPF = 305
    };
 #endif
 
@@ -93,7 +97,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 27 "1707005.y"
+#line 36 "1707005.y"
 
     struct use
     {
@@ -106,7 +110,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 110 "1707005.tab.h"
+#line 114 "1707005.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

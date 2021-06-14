@@ -9,13 +9,13 @@
 %}
 
 %%
-[+-]?[0-9]+                      {yylval.variable.ival = atoi(yytext);
-                                  return INT;}
+[+-]?[0-9]+                         {yylval.variable.ival = atoi(yytext);
+                                     return INT;}
 
-[+-]?[0-9]*[.][0-9]+              {yylval.variable.fval = atof(yytext);
-                                   return FLOAT;}
+[+-]?[0-9]*[.][0-9]+                {yylval.variable.fval = atof(yytext);
+                                     return FLOAT;}
 
-["][a-zA-Z0-9:_]*["]                {yytext++;int l=strlen(yytext);
+["].*["]                            {yytext++;int l=strlen(yytext);
                                     yylval.variable.st=yytext;
                                     yylval.variable.st[l-1]='\0';
                                     return STRING;}
@@ -29,6 +29,8 @@
 ")"                               {return *yytext;}
 "{"                               {return *yytext;}
 "}"                               {return *yytext;}
+"["                               {return *yytext;}
+"]"                               {return *yytext;}
 ","                               {return *yytext;}
 ":"                               {return COL;}
 "!"                               {return *yytext;}
@@ -40,8 +42,11 @@
 "<="                              {return *yytext;}
 "=="                              {return *yytext;}
 "!="                              {return *yytext;}
+"@"                               {return *yytext;}
 [#][a-z<>.h]+                     {return HEAD;}
 [/]{2}.*                          {return CMT;}
+[@][a-zA-Z0-9]+                   {yylval.variable.str = yytext;
+                                    return AN;}
 [ ;\t\n]                           {}
 "return"                          {return RET;}
 "void"                            {return VOID;}
@@ -60,7 +65,10 @@
 "pfi"                             {return PFI;}
 "pff"                             {return PFF;}
 "pfs"                             {return PFS;}
-"pfsn"                            {return PFSN;}
+"pfa"                             {return PFA;}
+"inpi"                            {return INPI;}
+"inpf"                            {return INPF;}
+"endl"                            {return END;}
 "len"                             {return LEN;}
 "cmp"                             {return CMP;}
 "cat"                             {return CAT;}
@@ -76,6 +84,7 @@
 "switch"                          {return SW;}
 "case"                            {return CA;}
 "default"                         {return DF;}
+"do"                              {return DO;}
 [a-zA-Z][a-zA-Z0-9]*              {yylval.variable.str = yytext;
                                     return ID;}
 .                                 {printf("Unknown character.\n");}

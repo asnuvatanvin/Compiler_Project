@@ -2,12 +2,12 @@
 	#include<stdio.h>
 	#include<math.h>
 	#include<string.h>
-        #include<limits.h>
-    	#include<float.h>
+    #include<limits.h>
+    #include<float.h>
 	void yyerror(const char *);
 	extern int yylex();
-    	extern int yyparse();
-    	extern FILE *yyin;
+    extern int yyparse();
+    extern FILE *yyin;
 	extern FILE *yyout;
 
     typedef struct {
@@ -19,9 +19,18 @@
     }store ;
     store symbol_table[200];
 
-	int count,sw,dv,iff;
+    typedef struct{
+        char array_name[100];
+        int arr[1000];
+        int limit;
+    }listt;
+    listt list[50];
+
+	int count,sw,dv,iff,array_counter;
 	store find_value(char **sym);
 	int add_value(char **sym);
+    int find_array_value(char **sym,int j);
+    int add_array_value(char **sym,int j);
 %}
 
 %union{
@@ -35,9 +44,9 @@
 }
 
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT VOID
-%type<variable>statement function function_call declaration_for_function params factor return while block condition expr assignments assignment if_else elseif else switch_ case cases df display var declaration type comment header for
-%token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD PFI PRIME DF POW PFF SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET PFS PFSN LEN CMP CAT CPY
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN
+%type<variable>statement function function_call declaration_for_function params factor do_while return while block condition expr assignments assignment if_else elseif else switch_ case cases df input display var declaration type comment header for array array_assignment array_operations
+%token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD PFI DO PRIME DF POW PFF PFA SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET PFS PFSN LEN CMP CAT CPY END INPI INPF
 %left '+' '-'
 %left '*' '/'
 %left INC DEC
@@ -46,22 +55,27 @@
 %%
 
 program:
-    |program statement
+    |program statement 
     ;
 
 statement:
     header
     |comment
     |function
-    |function_call
+    |function_call 
     |if_else 
-    |expr
+    |expr 
     |switch_
     |case
     |for
     |while
-    |declaration
+    |do_while
+    |declaration 
     |assignments
+    |array
+    |array_assignment 
+    |array_operations
+    |input
     |display
     |return
     ;
@@ -103,6 +117,18 @@ function_call:
     |ID '(' ')'
     ;
 
+input:
+    var '=' INPI '(' ')'{
+        int a;
+        scanf("%d",&a);
+        symbol_table[$1.ival].val = a;
+    }
+    |var '=' INPF '(' ')'{
+        float a;
+        scanf("%f",&a);
+        symbol_table[$1.ival].vall = a;
+    }
+    ;
 display:
     PFI '(' expr ')'{
         printf("%d\n",$3.ival);
@@ -113,15 +139,47 @@ display:
     |PFS '(' expr ')'{
         printf("%s ",$3.st);
     }
-    |PFSN '(' expr ')'{
-        printf("%s\n",$3.st);
-    }
+    |PFA '(' '<' AN ',' INT '>' ')' {int a = find_array_value(&$4.str,$6.ival); printf("%d\n",a);}
+    |END {printf("\n");}
+    ;
+array:
+    INTT AN '[' INT ']'{
+        char a[100];
+        strcpy(a,$2.str);
+        int i=0;
+        while(1)
+        {
+            if(a[i]=='[')
+            {
+                break;
+            }
+            i++;
+        }
+        a[i]='\0';
+        strcpy(list[array_counter].array_name,a);
+        list[array_counter].limit=$4.ival;
+        array_counter++;
+        //printf("%s %d\n",list[array_counter-1].array_name,list[array_counter-1].limit);
+        //printf("%s %d\n",a,$4.ival);
+        }
     ;
 
+array_assignment:
+    '<' AN ',' INT '>' '=' expr {int i = add_array_value(&$2.str,$4.ival); list[i].arr[$4.ival]=$7.ival;}
+    |'<' AN ',' INT '>' '=' array_operations{int i = add_array_value(&$2.str,$4.ival); list[i].arr[$4.ival]=$7.ival;}
+    ;
 
+array_operations:
+    '<' AN ',' INT '>' '+' '<' AN ',' INT '>' {int a = find_array_value(&$2.str,$4.ival),b = find_array_value(&$8.str,$10.ival); $$.ival = a+b;}
+    |'<' AN ',' INT '>' '-' '<' AN ',' INT '>' {int a = find_array_value(&$2.str,$4.ival),b = find_array_value(&$8.str,$10.ival); $$.ival = a-b;}
+    |'<' AN ',' INT '>' '*' '<' AN ',' INT '>' {int a = find_array_value(&$2.str,$4.ival),b = find_array_value(&$8.str,$10.ival); $$.ival = a*b;}
+    |'<' AN ',' INT '>' '/' '<' AN ',' INT '>' {int a = find_array_value(&$2.str,$4.ival),b = find_array_value(&$8.str,$10.ival); $$.ival = a/b;}
+    |'<' AN ',' INT '>' '%' '<' AN ',' INT '>' {int a = find_array_value(&$2.str,$4.ival),b = find_array_value(&$8.str,$10.ival); $$.ival = a%b;}
+    ;
 declaration:
     type assignments
     |type var
+    |type input
     ;
 
 type:
@@ -132,11 +190,11 @@ type:
     ;
 assignments:
     assignments ',' assignment
-    |assignment
+    |assignment 
     ;
 
 assignment: 
-    var '=' expr  {
+    var '=' expr   {
                     if($3.ival==INT_MIN && $3.fval==FLT_MIN && symbol_table[$1.ival].val==INT_MAX && symbol_table[$1.ival].vall==FLT_MAX)
                     {
                         strcpy(symbol_table[$1.ival].vas,$3.st);
@@ -160,6 +218,7 @@ assignment:
                     
 
     }
+    |var '=' array_operations{symbol_table[$1.ival].val=$3.ival;}
     ;
 
 var:
@@ -294,6 +353,12 @@ while:
         }
     }
     ;
+do_while:
+    DO '{' block WHILE '(' condition ')'{
+        printf("This is a do-while loop\n");
+    }
+    ;
+
 condition:
     factor{$$.ival=$1.ival;$$.fval=$1.fval;}
     |expr '>' factor{if($1.ival==INT_MIN){$$.ival = $1.fval > $3.fval;}else{$$.ival = $1.ival > $3.ival;}}
@@ -392,7 +457,7 @@ expr:
     |SINE '(' expr ')'{double x = (double)$3.fval,ans = sin((x*3.1416)/180.0);printf("%f\n",$$.fval=(float)ans);}
     |COS '(' expr ')'{double x = (double)$3.fval,ans = cos((x*3.1416)/180.0); printf("%f\n",$$.fval=(float)ans); }
     |TAN '(' expr ')'{double x = (double)$3.fval,ans = tan((x*3.1416)/180.0); printf("%f\n",$$.fval=(float)ans); }
-    |POW '(' expr ',' expr ')' {double x = (double)$3.fval,y = (double)$5.fval;printf("%f\n",$$.fval=(float)pow(x,y));}
+    |POW '(' expr ',' expr ')'{double x = (double)$3.fval,y = (double)$5.fval;printf("%f\n",$$.fval=(float)pow(x,y));}
     |LN '(' expr ')'{float x = $3.fval,ans = log(x);printf("%f\n",$$.fval=ans);}
     |ABS '(' expr ')'{$$.ival=abs($3.ival);printf("%d\n",$$.ival);}
     |FLOOR '(' expr ')'{$$.ival=(int)$3.fval;printf("%d\n",$$.ival);}
@@ -475,6 +540,68 @@ store find_value(char **sym)
 	return n;
 }
 
+int find_array_value(char **sym,int j)
+{
+    char a[100];
+    int l=strlen(*sym);
+    strcpy(a,*sym);
+    int i=0;
+    //printf("%s \n",a);
+    while(1)
+    {
+        if(a[i]==',')
+        {
+            break;
+        }
+        i++;
+    }
+    a[i]='\0';
+	int p = 0;
+	for(int i=0;i<count;i++)
+	{
+		if(!strcmp(a,list[i].array_name))
+		{
+            return list[i].arr[j];
+		}
+	}
+    printf("Array not declared\n");
+	return -1;
+}
+int add_array_value(char **sym,int j)
+{
+        char a[100];
+        strcpy(a,*sym);
+        int i=0;
+        while(1)
+        {
+            if(a[i]==',')
+            {
+                break;
+            }
+            i++;
+        }
+        a[i]='\0';
+        int p=0;
+        for(int i=0;i<array_counter;i++)
+        {
+            if(!strcmp(a,list[i].array_name)){
+                if(j<list[i].limit)
+                {
+                    //list[i].arr[$4.ival]=$7.ival;
+                    p=1;
+                    return i;
+                }
+                else{
+                    printf("Program is trying to access invalid memory location.\n");
+                }
+           
+            }
+        }
+        if(!p)
+        {
+            printf("Invalid Statement.\n");
+        }
+}
 void yyerror(const char *s)
 {
 	fprintf(stderr, "error: %s\n",s);
