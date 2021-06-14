@@ -5,9 +5,9 @@
 
 int function1(int a,float b,string c):
     int a=20,b=50
-    pfs("Value_of_a:")
+    pfs("Value of a:")
     pfi(a)
-    pfs("Value_of_b:")
+    pfs("Value of b:")
     pfi(b)
     pfs("Minimum:")
     min(a,b)
@@ -15,65 +15,71 @@ int function1(int a,float b,string c):
     max(a,b)
     pfs("GCD:")
     gcd(a,b)
-    pfs("Prime_Checking:")
+    pfs("Prime Checking:")
     prime(13)
     pfs("Factorial:")
     a!
     int k=-2
-    pfs("Value_of_k:")
+    pfs("Value of k:")
     pfi(k)
-    pfs("Absolute_Value")
+    pfs("Absolute Value")
     abs(k)
     return a
 
 
 float function2(int val,float fval):
     float m = 60.0, n = 2.35
-    pfs("Value_of_m:")
+    pfs("Value of m:")
     pff(m)
-    pfs("Sine_Function:")
+    pfs("Sine Function:")
     sin(m)
-    pfs("Cosine_Function:")
+    pfs("Cosine Function:")
     cos(m)
-    pfs("Tangent_Function:")
+    pfs("Tangent Function:")
     tan(m)
-    pfs("Value_of_n:")
+    pfs("Value of n:")
     pff(n)
-    pfs("e_based_log_Function:")
+    pfs("e based log Function:")
     ln(n)
-    pfs("Floor_Function:")
+    pfs("Floor Function:")
     floor(n)
-    pfs("Ceil_Function:")
+    pfs("Ceil Function:")
     ceil(n)
     m=5.0
     n=2.0
-    pfs("5_to_the_power_2_is_equal_to:")
+    pfs("5 to the power 2 is equal to:")
     pow(m,n)
     return m
 
 
 void function3():
     string str="CSE"
-    pfs("Value_of_str:")
-    pfsn(str)
+    pfs("Value of str:")
+    pfs(str)
+    endl
     len(str)
     string st="3202"
-    pfs("Value_of_st:")
-    pfsn(st)
-    pfs("Comparing_str_and_st:")
+    pfs("Value of st:")
+    pfs(st)
+    endl
+    pfs("Comparing str and st:")
     cmp(str,st)
-    pfs("String_Catenation")
+    pfs("String Concatenation")
     cat(str,st)
-    pfsn(str)
-    pfs("Copying_str_to_st:")
+    pfs(str)
+    endl
+    pfs("Copying str to st:")
     cpy(st,str)
-    pfsn(st)
+    pfs(st)
+    endl
     return st
 
 
 void main():
-    int a=10,b=20
-    int c
+    int a,b,c,d
+    pfs("Enter two integer values:")
+    a = inpi()
+    b = inpi()
     c=a+b
     pfi(c)
     c=b-a
@@ -88,8 +94,10 @@ void main():
     pfi(b)
     a--
     pfi(a)
-    float u=8.7,v=66.4
-    float w
+    float u,v,w
+    pfs("Enter two float values:")
+    u = inpf()
+    v = inpf()
     w=u+v
     pff(w)
     w=u-v
@@ -98,6 +106,25 @@ void main():
     pff(w)
     w=v/u
     pff(w)
+    pfs("Array Operations:")
+    endl
+    int @ara[3]
+    <@ara,0> = a + b
+    <@ara,1> = a - b
+    d=<@ara,0>+<@ara,1>
+    pfi(d)
+    d=<@ara,0>-<@ara,1>
+    pfi(d)
+    d=<@ara,0>*<@ara,1>
+    pfi(d)
+    d=<@ara,0>/<@ara,1>
+    pfi(d)
+    d=<@ara,0>%<@ara,1>
+    pfi(d)
+    <@ara,2> = <@ara,0>+<@ara,1>
+    pfa(<@ara,2>)
+    <@ara,2> = 4
+    pfa(<@ara,2>)
     for(0,10,1){
         if(a==9){
         a=a*2
@@ -113,8 +140,13 @@ void main():
     case 19: pfi(19)
     case 20: pfi(20)
     default: pfi(0)
+    
+    do{
+	c++;
+    }while(c<10)
 
-    pfsn("Below_is_an_if_elseif_else_statement")
+    pfs("Below is an if elseif else statement")
+    endl
     if(b==20){
         float h=3.0
         if(h>=4.0){
@@ -134,7 +166,8 @@ void main():
         pfi(a)
     }
     string tt
-    pfsn("Function_call_ahead")
+    pfs("Function call ahead")
+    endl
     function1(a,u,tt)
     function2(a,u)
     function3()
