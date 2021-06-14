@@ -2,12 +2,12 @@
 	#include<stdio.h>
 	#include<math.h>
 	#include<string.h>
-    #include<limits.h>
-    #include<float.h>
+    	#include<limits.h>
+    	#include<float.h>
 	void yyerror(const char *);
 	extern int yylex();
-    extern int yyparse();
-    extern FILE *yyin;
+    	extern int yyparse();
+    	extern FILE *yyin;
 	extern FILE *yyout;
 
     typedef struct {
