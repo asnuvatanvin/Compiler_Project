@@ -72,7 +72,6 @@ void function3():
     cpy(st,str)
     pfs(st)
     endl
-    return
 
 
 void main():
