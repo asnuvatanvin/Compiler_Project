@@ -74,7 +74,7 @@ void function3():
     endl
 
 
-void main():
+int main():
     int a,b,c,d
     pfs("Enter two integer values:")
     a = inpi()
